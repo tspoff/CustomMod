@@ -1,0 +1,106 @@
+IF
+	GlobalTimerExpired("EndGame","GLOBAL")
+THEN
+	RESPONSE #100
+		Kill(Player1)
+END
+
+//Use Hit Dice
+IF
+	HotKey(V)
+	HPPercentGT(Myself,30)
+THEN
+	RESPONSE #100
+		ApplySpell(Myself,1873)
+		Continue()
+END
+
+IF
+	GlobalTimerExpired("PoisonParty","GLOBAL")
+	GlobalLT("PoisonWarning","GLOBAL",9)
+	Global("PartyCured","GLOBAL",0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("PoisonParty","GLOBAL",ONE_DAY)
+		IncrementGlobal("PoisonWarning","GLOBAL",1)
+		DisplayString(Myself,11833) // You feel very ill, and you have thrown up your previous meal. Your head is fuzzy, and you are confused as to why you are sick. Then you remember what Lothander had told you. You've been poisoned! Lothander wasn't lying after all, and only he has the cure.
+END
+
+IF
+	GlobalTimerExpired("PoisonParty2","GLOBAL")
+	Global("PartyCured","GLOBAL",0)
+THEN
+	RESPONSE #100
+		Kill(Player6)
+		Kill(Player5)
+		Kill(Player4)
+		Kill(Player3)
+		Kill(Player2)
+		Kill(Player1)
+END
+
+IF
+	!InParty(Myself)
+	OR(5)
+		Name("neera",Myself)
+		Name("dorn",Myself)
+		Name("rasaad",Myself)
+		Name("baeloth",Myself)
+		HappinessGT(Myself,-299)
+THEN
+	RESPONSE #100
+		Dialogue(Player1)
+		ChangeAIScript("",DEFAULT)
+END
+
+IF
+	!InParty(Myself)
+	!HappinessGT(Myself,-299)
+	!Name("neera",Myself)
+	!Name("dorn",Myself)
+	!Name("rasaad",Myself)
+	!Name("baeloth",Myself)
+THEN
+	RESPONSE #100
+		VerbalConstant(Myself,UNHAPPY_BREAKING_POINT)
+		Wait(5)
+		EscapeArea()
+END
+
+IF
+	!CharName("Imoen",Myself)
+	BreakingPoint()
+THEN
+	RESPONSE #100
+		VerbalConstant(Myself,UNHAPPY_BREAKING_POINT)
+		Wait(3)
+		EscapeArea()
+END
+
+IF
+	CheckStat(Myself,0,DEX)
+	See("Kiel")
+THEN
+	RESPONSE #100
+		ActionOverride("Kiel",DestroySelf())
+		LeaveParty()
+		SetDialog("KielPC")
+		SetGlobal("KielPC","GLOBAL",1)
+		ChangeAIScript("",DEFAULT)
+END
+
+IF
+	Global("Infected","GLOBAL",1)
+	GlobalTimerExpired("PlayerInfected","GLOBAL")
+	!Dead("Mendas3")
+	Exists(Player2)
+THEN
+	RESPONSE #100
+		ActionOverride(Player2,ForceSpell(Myself,PLAYER_WEREWOLF_CHANGE)) // SPWI946.SPL (No such index)
+		ActionOverride(Player3,ForceSpell(Myself,PLAYER_WEREWOLF_CHANGE)) // SPWI946.SPL (No such index)
+		ActionOverride(Player4,ForceSpell(Myself,PLAYER_WEREWOLF_CHANGE)) // SPWI946.SPL (No such index)
+		ActionOverride(Player5,ForceSpell(Myself,PLAYER_WEREWOLF_CHANGE)) // SPWI946.SPL (No such index)
+		ActionOverride(Player6,ForceSpell(Myself,PLAYER_WEREWOLF_CHANGE)) // SPWI946.SPL (No such index)
+END
+
+

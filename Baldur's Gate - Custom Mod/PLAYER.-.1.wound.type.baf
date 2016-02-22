@@ -1,0 +1,285 @@
+//Short Rest - test
+IF
+	HotKey(V)
+THEN
+	RESPONSE #100
+		FadeToColor([80.0],0)
+		ActionOverride(Player1,ReallyForceSpellRES("#GSTART",Player1))
+		FadeFromColor([80.0],0)
+		Continue()
+END
+
+// //Temporary title setting code - moved to a AI script
+// IF
+	// HotKey(N)
+// THEN
+	// RESPONSE #100
+		// ApplySpellRES("#TITLE",Player1)
+		// Continue()
+// END
+
+// /* 
+// ---------------------
+// Short Rest 
+// ---------------------
+// SR - count of short rests remaining, reset on long rest. 
+// */
+
+IF
+	PartyRested()
+THEN
+	RESPONSE #100
+		SetGlobal("SR", "GLOBAL", 3)
+		Continue()
+END
+
+//Do Short Rest
+IF
+	HotKey(B)
+	!ActuallyInCombat()
+	GlobalGT("SR", "GLOBAL", 0)
+THEN
+	RESPONSE #100
+		FadeToColor([40.0],0)
+		DisplayStringNoName(Player1, 66180)
+		
+		// ApplySpellRES("#SR_HEAL",Player1)
+		// ApplySpellRES("#SR_HEAL",Player2)
+		// ApplySpellRES("#SR_HEAL",Player3)
+		// ApplySpellRES("#SR_HEAL",Player4)
+		// ApplySpellRES("#SR_HEAL",Player5)
+		// ApplySpellRES("#SR_HEAL",Player6)	
+		
+		ReallyForceSpellRES("#SR_HEAL",Player1)
+		ReallyForceSpellRES("#SR_HEAL",Player2)
+		ReallyForceSpellRES("#SR_HEAL",Player3)
+		ReallyForceSpellRES("#SR_HEAL",Player4)
+		ReallyForceSpellRES("#SR_HEAL",Player5)
+		ReallyForceSpellRES("#SR_HEAL",Player6)			
+		
+		// ActionOverride(Player1,ReallyForceSpellRES("#SR_HEAL",Player1))
+		// ActionOverride(Player2,ReallyForceSpellRES("#SR_HEAL",Player2))
+		// ActionOverride(Player3,ReallyForceSpellRES("#SR_HEAL",Player3))
+		// ActionOverride(Player4,ReallyForceSpellRES("#SR_HEAL",Player4))
+		// ActionOverride(Player5,ReallyForceSpellRES("#SR_HEAL",Player5))
+		// ActionOverride(Player6,ReallyForceSpellRES("#SR_HEAL",Player6))
+		FadeFromColor([40.0],0)
+		AdvanceTime(100)
+		IncrementGlobal("SR", "GLOBAL", -1)
+		SetGlobal("ShortResteded", "GLOBAL", 1)
+		Continue()	
+END
+
+//No short rests left
+IF
+	HotKey(B)
+	!ActuallyInCombat()
+	GlobalLT("SR", "GLOBAL", 1)
+THEN
+	RESPONSE #100
+	DisplayStringNoName(Player1, 66179)
+	Continue()
+END
+
+// /* 
+// ---------------------
+// Injury/Death System
+// ---------------------
+// */
+
+//WS
+//0 - Alive
+//1 - 'Injured' and out of the fight
+//2 - 'Revived' and ready to get injury penalties
+//3 - Dead for real
+
+//Cycle through WS 1-2 naturally
+//Reset the WS when a character is brought back to life
+
+//START: Character Died (Player2)
+IF
+	PartyMemberDied(Player2)
+	// StateCheck(Player2,STATE_REALLY_DEAD)
+	// Global("Player2WS","GLOBAL",0)
+THEN
+	RESPONSE #75
+		DisplayString(Player2,66188) // Still clings to life
+		SetGlobal("Player2WS","GLOBAL",1)
+		Continue()
+	RESPONSE #25
+		DisplayString(Player2,66134) // Succumbs to death
+		SetGlobal("Player2WS","GLOBAL",3)
+		Continue()
+END
+
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortResteded","GLOBAL",1)
+	Global("Player2WS","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player2,1884)
+		SetGlobal("Player2WS","GLOBAL",0)
+		Wait(3)
+		ApplySpellRES("#I_ICON",Player2)
+		ApplySpellRES("#DEXHIT",Player2)
+		ApplySpellRES("#STRHIT",Player2)
+		ApplySpellRES("#I_TORSO",Player2)
+		ApplySpellRES("#I_LEG",Player2)
+		Continue()
+END
+//END: (Player2)
+
+//START: Character Died (Player3)
+IF
+	PartyMemberDied(Player3)
+	// StateCheck(Player3,STATE_REALLY_DEAD)
+	// Global("Player3WS","GLOBAL",0)
+THEN
+	RESPONSE #75
+		DisplayString(Player3,66188) // Still clings to life
+		SetGlobal("Player3WS","GLOBAL",1)
+		Continue()
+	RESPONSE #25
+		DisplayString(Player3,66134) // Succumbs to death
+		SetGlobal("Player3WS","GLOBAL",3)
+		Continue()
+END
+
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortRested","GLOBAL",1)
+	Global("Player3WS","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player3,1884)
+		SetGlobal("Player3WS","GLOBAL",0)
+		Wait(3)
+		ApplySpellRES("#I_ICON",Player3)
+		
+		ApplySpellRES("#DEXHIT",Player3)
+		ApplySpellRES("#STRHIT",Player3)
+		ApplySpellRES("#I_TORSO",Player3)
+		ApplySpellRES("#I_LEG",Player3)
+		
+		Continue()
+END
+//END: (Player3)
+
+//START: Character Died (Player4)
+IF
+	PartyMemberDied(Player4)
+	// StateCheck(Player4,STATE_REALLY_DEAD)
+	// Global("Player4WS","GLOBAL",0)
+THEN
+	RESPONSE #75
+		DisplayString(Player4,66188) // Still clings to life
+		SetGlobal("Player4WS","GLOBAL",1)
+		Continue()
+	RESPONSE #25
+		DisplayString(Player4,66134) // Succumbs to death
+		SetGlobal("Player4WS","GLOBAL",3)
+		Continue()
+END
+
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortRested","GLOBAL",1)
+	Global("Player4WS","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player4,1884)
+		SetGlobal("Player4WS","GLOBAL",0)
+		Wait(3)
+		ApplySpellRES("#I_ICON",Player4)
+		
+		ApplySpellRES("#DEXHIT",Player4)
+		ApplySpellRES("#STRHIT",Player4)
+		ApplySpellRES("#I_TORSO",Player4)
+		ApplySpellRES("#I_LEG",Player4)
+		Continue()
+END
+//END: (Player4)
+
+//START: Character Died (Player5)
+IF
+	PartyMemberDied(Player5)
+	// StateCheck(Player5,STATE_REALLY_DEAD)
+	// Global("Player5WS","GLOBAL",0)
+THEN
+	RESPONSE #75
+		DisplayString(Player5,66188) // Still clings to life
+		SetGlobal("Player5WS","GLOBAL",1)
+		Continue()
+	RESPONSE #25
+		DisplayString(Player5,66134) // Succumbs to death
+		SetGlobal("Player5WS","GLOBAL",3)
+		Continue()
+END
+
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortRested","GLOBAL",1)
+	Global("Player5WS","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player5,1884)
+		SetGlobal("Player5WS","GLOBAL",0)
+		Wait(3)
+		ApplySpellRES("#I_ICON",Player5)
+		
+		ApplySpellRES("#DEXHIT",Player5)
+		ApplySpellRES("#STRHIT",Player5)
+		ApplySpellRES("#I_TORSO",Player5)
+		ApplySpellRES("#I_LEG",Player5)
+		Continue()
+END
+//END: (Player5)
+
+//START: Character Died (Player6)
+IF
+	PartyMemberDied(Player6)
+	// StateCheck(Player6,STATE_REALLY_DEAD)
+	// Global("Player6WS","GLOBAL",0)
+THEN
+	RESPONSE #75
+		DisplayString(Player6,66188) // Still clings to life
+		SetGlobal("Player6WS","GLOBAL",1)
+		Continue()
+	RESPONSE #25
+		DisplayString(Player6,66134) // Succumbs to death
+		SetGlobal("Player6WS","GLOBAL",3)
+		Continue()
+END
+
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortRested","GLOBAL",1)
+	Global("Player6WS","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player6,1884)
+		SetGlobal("Player6WS","GLOBAL",0)
+		Wait(3)
+		ApplySpellRES("#I_ICON",Player6)
+		
+		ApplySpellRES("#DEXHIT",Player6)
+		ApplySpellRES("#STRHIT",Player6)
+		ApplySpellRES("#I_TORSO",Player6)
+		ApplySpellRES("#I_LEG",Player6)
+		Continue()
+END
+//END: (Player6)
+
+//If shortRested doesn't result in any action
+IF
+	Global("ShortRested","GLOBAL",1)
+THEN
+	RESPONSE #100
+		SetGlobal("ShortRested","GLOBAL",0)
+END

@@ -1,0 +1,549 @@
+IF
+	GlobalTimerExpired("EndGame","GLOBAL")
+THEN
+	RESPONSE #100
+		Kill(Player1)
+END
+
+IF
+	GlobalTimerExpired("PoisonParty","GLOBAL")
+	GlobalLT("PoisonWarning","GLOBAL",9)
+	Global("PartyCured","GLOBAL",0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("PoisonParty","GLOBAL",ONE_DAY)
+		IncrementGlobal("PoisonWarning","GLOBAL",1)
+		DisplayString(Myself,11833) // You feel very ill, and you have thrown up your previous meal. Your head is fuzzy, and you are confused as to why you are sick. Then you remember what Lothander had told you. You've been poisoned! Lothander wasn't lying after all, and only he has the cure.
+END
+
+IF
+	GlobalTimerExpired("PoisonParty2","GLOBAL")
+	Global("PartyCured","GLOBAL",0)
+THEN
+	RESPONSE #100
+		Kill(Player6)
+		Kill(Player5)
+		Kill(Player4)
+		Kill(Player3)
+		Kill(Player2)
+		Kill(Player1)
+END
+
+//Short Rest
+IF
+	HotKey(V)
+THEN
+	RESPONSE #100
+		FadeToColor([40.0],0)
+		Wait(2)
+		FadeFromColor([40.0],0)
+		Continue()
+END
+
+//WoundState
+//0 - Alive
+//1 - 'Injured' and out of the fight
+//2 - 'Revived' and ready to get injury penalties
+//3 - Dead for real
+
+//Cycle through WoundState 1-2 naturally
+//Reset the WoundState when a character is brought back to life
+//START: Character Died
+IF
+	// PartyMemberDied(Player2)
+	StateCheck(Player2,STATE_REALLY_DEAD)
+	Global("Player2WoundState","GLOBAL",0)
+THEN
+	RESPONSE #70
+		DisplayString(Player2,65006) // Still clings to life
+		SetGlobal("Player2WoundState","GLOBAL",1)
+		Continue()
+	RESPONSE #30
+		DisplayString(Player2,65007) // Succumbs to death
+		SetGlobal("Player2WoundState","GLOBAL",3)
+		Continue()
+END
+
+//START: Recovery Start
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortRest","GLOBAL",1)
+	Global("Player2WoundState","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player2,1884)
+		SetGlobal("Player2WoundState","GLOBAL",2)
+		Wait(1)
+		Continue()
+END
+
+// //START: Recovery - Pick wound type
+IF
+	Global("Player2WoundState","GLOBAL",2)
+THEN
+	RESPONSE #20
+		ApplySpellRES("#DEXHIT",Player2)
+		SetGlobal("Player2WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#INTHIT",Player2)
+		SetGlobal("Player2WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#CONHIT",Player2)
+		SetGlobal("Player2WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#STRHIT",Player2)
+		SetGlobal("Player2WoundState","GLOBAL",0)
+		Continue()
+END
+
+//START: Character Died
+IF
+	// PartyMemberDied(Player3)
+	StateCheck(Player3,STATE_REALLY_DEAD)
+	Global("Player3WoundState","GLOBAL",0)
+THEN
+	RESPONSE #70
+		DisplayString(Player3,65006) // Still clings to life
+		SetGlobal("Player3WoundState","GLOBAL",1)
+		Continue()
+	RESPONSE #30
+		DisplayString(Player3,65007) // Succumbs to death
+		SetGlobal("Player3WoundState","GLOBAL",3)
+		Continue()
+END
+
+//START: Recovery Start
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortRest","GLOBAL",1)
+	Global("Player3WoundState","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player3,1884)
+		SetGlobal("Player3WoundState","GLOBAL",2)
+		Wait(1)
+		Continue()
+END
+
+// //START: Recovery - Pick wound type
+IF
+	Global("Player3WoundState","GLOBAL",2)
+THEN
+	RESPONSE #20
+		ApplySpellRES("#DEXHIT",Player3)
+		SetGlobal("Player3WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#INTHIT",Player3)
+		SetGlobal("Player3WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#CONHIT",Player3)
+		SetGlobal("Player3WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#STRHIT",Player3)
+		SetGlobal("Player3WoundState","GLOBAL",0)
+		Continue()
+END
+
+//START: Character Died
+IF
+	// PartyMemberDied(Player4)
+	StateCheck(Player4,STATE_REALLY_DEAD)
+	Global("Player4WoundState","GLOBAL",0)
+THEN
+	RESPONSE #70
+		DisplayString(Player4,65006) // Still clings to life
+		SetGlobal("Player4WoundState","GLOBAL",1)
+		Continue()
+	RESPONSE #30
+		DisplayString(Player4,65007) // Succumbs to death
+		SetGlobal("Player4WoundState","GLOBAL",3)
+		Continue()
+END
+
+//START: Recovery Start
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortRest","GLOBAL",1)
+	Global("Player4WoundState","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player4,1884)
+		SetGlobal("Player4WoundState","GLOBAL",2)
+		Wait(1)
+		Continue()
+END
+
+// //START: Recovery - Pick wound type
+IF
+	Global("Player4WoundState","GLOBAL",2)
+THEN
+	RESPONSE #20
+		ApplySpellRES("#DEXHIT",Player4)
+		SetGlobal("Player4WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#INTHIT",Player4)
+		SetGlobal("Player4WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#CONHIT",Player4)
+		SetGlobal("Player4WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#STRHIT",Player4)
+		SetGlobal("Player4WoundState","GLOBAL",0)
+		Continue()
+END
+
+IF
+	GlobalTimerExpired("EndGame","GLOBAL")
+THEN
+	RESPONSE #100
+		Kill(Player1)
+END
+
+IF
+	GlobalTimerExpired("PoisonParty","GLOBAL")
+	GlobalLT("PoisonWarning","GLOBAL",9)
+	Global("PartyCured","GLOBAL",0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("PoisonParty","GLOBAL",ONE_DAY)
+		IncrementGlobal("PoisonWarning","GLOBAL",1)
+		DisplayString(Myself,11833) // You feel very ill, and you have thrown up your previous meal. Your head is fuzzy, and you are confused as to why you are sick. Then you remember what Lothander had told you. You've been poisoned! Lothander wasn't lying after all, and only he has the cure.
+END
+
+IF
+	GlobalTimerExpired("PoisonParty2","GLOBAL")
+	Global("PartyCured","GLOBAL",0)
+THEN
+	RESPONSE #100
+		Kill(Player6)
+		Kill(Player5)
+		Kill(Player4)
+		Kill(Player3)
+		Kill(Player2)
+		Kill(Player1)
+END
+
+//Short Rest
+IF
+	HotKey(V)
+THEN
+	RESPONSE #100
+		FadeToColor([40.0],0)
+		Wait(2)
+		FadeFromColor([40.0],0)
+		Continue()
+END
+
+//WoundState
+//0 - Alive
+//1 - 'Injured' and out of the fight
+//2 - 'Revived' and ready to get injury penalties
+//3 - Dead for real
+
+//Cycle through WoundState 1-2 naturally
+//Reset the WoundState when a character is brought back to life
+//START: Character Died
+IF
+	PartyMemberDied(Player2)
+	// StateCheck(Player2,STATE_REALLY_DEAD)
+	// Global("Player2WoundState","GLOBAL",0)
+THEN
+	RESPONSE #70
+		DisplayString(Player2,65006) // Still clings to life
+		SetGlobal("Player2WoundState","GLOBAL",1)
+		Continue()
+	RESPONSE #30
+		DisplayString(Player2,65007) // Succumbs to death
+		SetGlobal("Player2WoundState","GLOBAL",3)
+		Continue()
+END
+
+//START: Recovery Start
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortRest","GLOBAL",1)
+	Global("Player2WoundState","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player2,1884)
+		SetGlobal("Player2WoundState","GLOBAL",2)
+		Wait(1)
+		Continue()
+END
+
+// //START: Recovery - Pick wound type
+IF
+	Global("Player2WoundState","GLOBAL",2)
+THEN
+	RESPONSE #20
+		ApplySpellRES("#DEXHIT",Player2)
+		SetGlobal("Player2WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#INTHIT",Player2)
+		SetGlobal("Player2WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#CONHIT",Player2)
+		SetGlobal("Player2WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#STRHIT",Player2)
+		SetGlobal("Player2WoundState","GLOBAL",0)
+		Continue()
+END
+
+//START: Character Died
+IF
+	PartyMemberDied(Player3)
+	// StateCheck(Player3,STATE_REALLY_DEAD)
+	// Global("Player3WoundState","GLOBAL",0)
+THEN
+	RESPONSE #70
+		DisplayString(Player3,65006) // Still clings to life
+		SetGlobal("Player3WoundState","GLOBAL",1)
+		Continue()
+	RESPONSE #30
+		DisplayString(Player3,65007) // Succumbs to death
+		SetGlobal("Player3WoundState","GLOBAL",3)
+		Continue()
+END
+
+//START: Recovery Start
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortRest","GLOBAL",1)
+	Global("Player3WoundState","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player3,1884)
+		SetGlobal("Player3WoundState","GLOBAL",2)
+		Wait(1)
+		Continue()
+END
+
+// //START: Recovery - Pick wound type
+IF
+	Global("Player3WoundState","GLOBAL",2)
+THEN
+	RESPONSE #20
+		ApplySpellRES("#DEXHIT",Player3)
+		SetGlobal("Player3WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#INTHIT",Player3)
+		SetGlobal("Player3WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#CONHIT",Player3)
+		SetGlobal("Player3WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#STRHIT",Player3)
+		SetGlobal("Player3WoundState","GLOBAL",0)
+		Continue()
+END
+
+//START: Character Died
+IF
+	PartyMemberDied(Player4)
+	// StateCheck(Player4,STATE_REALLY_DEAD)
+	// Global("Player4WoundState","GLOBAL",0)
+THEN
+	RESPONSE #70
+		DisplayString(Player4,65006) // Still clings to life
+		SetGlobal("Player4WoundState","GLOBAL",1)
+		Continue()
+	RESPONSE #30
+		DisplayString(Player4,65007) // Succumbs to death
+		SetGlobal("Player4WoundState","GLOBAL",3)
+		Continue()
+END
+
+//START: Recovery Start
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortRest","GLOBAL",1)
+	Global("Player4WoundState","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player4,1884)
+		SetGlobal("Player4WoundState","GLOBAL",2)
+		Wait(1)
+		Continue()
+END
+
+// //START: Recovery - Pick wound type
+IF
+	Global("Player4WoundState","GLOBAL",2)
+THEN
+	RESPONSE #20
+		ApplySpellRES("#DEXHIT",Player4)
+		SetGlobal("Player4WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#INTHIT",Player4)
+		SetGlobal("Player4WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#CONHIT",Player4)
+		SetGlobal("Player4WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#STRHIT",Player4)
+		SetGlobal("Player4WoundState","GLOBAL",0)
+		Continue()
+END
+
+//START: Character Died
+IF
+	PartyMemberDied(Player5)
+	// StateCheck(Player5,STATE_REALLY_DEAD)
+	// Global("Player5WoundState","GLOBAL",0)
+THEN
+	RESPONSE #70
+		DisplayString(Player5,65006) // Still clings to life
+		SetGlobal("Player5WoundState","GLOBAL",1)
+		Continue()
+	RESPONSE #30
+		DisplayString(Player5,65007) // Succumbs to death
+		SetGlobal("Player5WoundState","GLOBAL",3)
+		Continue()
+END
+
+//START: Recovery Start
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortRest","GLOBAL",1)
+	Global("Player5WoundState","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player5,1884)
+		SetGlobal("Player5WoundState","GLOBAL",2)
+		Wait(1)
+		Continue()
+END
+
+// //START: Recovery - Pick wound type
+IF
+	Global("Player5WoundState","GLOBAL",2)
+THEN
+	RESPONSE #20
+		ApplySpellRES("#DEXHIT",Player5)
+		SetGlobal("Player5WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#INTHIT",Player5)
+		SetGlobal("Player5WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#CONHIT",Player5)
+		SetGlobal("Player5WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#STRHIT",Player5)
+		SetGlobal("Player5WoundState","GLOBAL",0)
+		Continue()
+END
+
+//START: Character Died
+IF
+	PartyMemberDied(Player6)
+	// StateCheck(Player6,STATE_REALLY_DEAD)
+	// Global("Player6WoundState","GLOBAL",0)
+THEN
+	RESPONSE #70
+		DisplayString(Player6,65006) // Still clings to life
+		SetGlobal("Player6WoundState","GLOBAL",1)
+		Continue()
+	RESPONSE #30
+		DisplayString(Player6,65007) // Succumbs to death
+		SetGlobal("Player6WoundState","GLOBAL",3)
+		Continue()
+END
+
+//START: Recovery Start
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortRest","GLOBAL",1)
+	Global("Player6WoundState","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player6,1884)
+		SetGlobal("Player6WoundState","GLOBAL",2)
+		Wait(1)
+		Continue()
+END
+
+// //START: Recovery - Pick wound type
+IF
+	Global("Player6WoundState","GLOBAL",2)
+THEN
+	RESPONSE #20
+		ApplySpellRES("#DEXHIT",Player6)
+		SetGlobal("Player6WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#INTHIT",Player6)
+		SetGlobal("Player6WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#CONHIT",Player6)
+		SetGlobal("Player6WoundState","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#STRHIT",Player6)
+		SetGlobal("Player6WoundState","GLOBAL",0)
+		Continue()
+END
+
+IF
+	!InParty(Myself)
+THEN
+	RESPONSE #100
+		Dialogue(Player1)
+		ChangeAIScript("",DEFAULT)
+		ChangeAIScript("",OVERRIDE)
+		SetDialog("multig")
+END
+
+IF
+	BreakingPoint()
+THEN
+	RESPONSE #100
+		Wait(1)
+		Dialogue(Player1)
+		ChangeAIScript("",DEFAULT)
+		SetDialog("multig")
+END
+
+IF
+	Global("Infected","GLOBAL",1)
+	GlobalTimerExpired("PlayerInfected","GLOBAL")
+	!Dead("Mendas3")
+	Exists(Player2)
+THEN
+	RESPONSE #100
+		ActionOverride(Player2,ForceSpell(Myself,PLAYER_WEREWOLF_CHANGE)) // SPWI946.SPL (No such index)
+		ActionOverride(Player3,ForceSpell(Myself,PLAYER_WEREWOLF_CHANGE)) // SPWI946.SPL (No such index)
+		ActionOverride(Player4,ForceSpell(Myself,PLAYER_WEREWOLF_CHANGE)) // SPWI946.SPL (No such index)
+		ActionOverride(Player5,ForceSpell(Myself,PLAYER_WEREWOLF_CHANGE)) // SPWI946.SPL (No such index)
+		ActionOverride(Player6,ForceSpell(Myself,PLAYER_WEREWOLF_CHANGE)) // SPWI946.SPL (No such index)
+END

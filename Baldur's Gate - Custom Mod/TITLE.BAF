@@ -1,0 +1,20 @@
+//#T_MINSC
+//#T_MONTY
+
+IF
+	HotKey(N)
+THEN
+	RESPONSE #100
+		ApplySpellRES("#TITLE",Myself) // No such index
+		Continue()
+END
+
+IF
+	HotKey(M)
+THEN
+	RESPONSE #100
+		ApplySpellRES("d5_thkit",Myself) // Choose a kit
+		Continue()
+END
+
+

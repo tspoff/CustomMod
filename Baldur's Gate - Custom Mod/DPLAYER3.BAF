@@ -1,0 +1,273 @@
+IF
+	GlobalTimerExpired("EndGame","GLOBAL")
+THEN
+	RESPONSE #100
+		Kill(Player1)
+END
+
+IF
+	GlobalTimerExpired("PoisonParty","GLOBAL")
+	GlobalLT("PoisonWarning","GLOBAL",9)
+	Global("PartyCured","GLOBAL",0)
+THEN
+	RESPONSE #100
+		SetGlobalTimer("PoisonParty","GLOBAL",ONE_DAY)
+		IncrementGlobal("PoisonWarning","GLOBAL",1)
+		DisplayString(Myself,11833) // You feel very ill, and you have thrown up your previous meal. Your head is fuzzy, and you are confused as to why you are sick. Then you remember what Lothander had told you. You've been poisoned! Lothander wasn't lying after all, and only he has the cure.
+END
+
+IF
+	GlobalTimerExpired("PoisonParty2","GLOBAL")
+	Global("PartyCured","GLOBAL",0)
+THEN
+	RESPONSE #100
+		Kill(Player6)
+		Kill(Player5)
+		Kill(Player4)
+		Kill(Player3)
+		Kill(Player2)
+		Kill(Player1)
+END
+
+IF
+	HotKey(V)
+THEN
+	RESPONSE #100
+		FadeToColor([40.0],0)
+		Wait(2)
+		FadeFromColor([40.0],0)
+		Continue()
+END
+
+
+
+//Globals
+//------------
+//Player1MinHP thru Player6MinHP - current status of death avoidance for character 
+
+
+//START: Determine whether each character can die
+IF 
+	Global("Player1MinHP","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpellRES("#MINHP",Player1)
+		SetGlobal("Player1MinHP","GLOBAL",1)
+END
+
+IF 
+	Global("Player2MinHP","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player2,1890)
+		SetGlobal("Player2MinHP","GLOBAL",1)
+END
+
+IF 
+	Global("Player3MinHP","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpellRES("#MINHP",Player3)
+		SetGlobal("Player3MinHP","GLOBAL",1)
+END
+
+IF 
+	Global("Player4MinHP","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpellRES("#MINHP",Player4)
+		SetGlobal("Player4MinHP","GLOBAL",1)
+END
+
+IF 
+	HPPercentLT(Player5, 50)
+THEN
+	RESPONSE #100
+		ApplySpellRES("#GSTART",Player5)
+		SetGlobal("Player5MinHP","GLOBAL",1)
+END
+
+IF 
+	HPPercentLT(Player6, 50)
+THEN
+	RESPONSE #100
+		ApplySpellRES("#GSTART",Player6)
+		SetGlobal("Player6MinHP","GLOBAL",1)
+END
+//END 
+
+//START: When a character is reduced to 1hp, collapse
+// IF
+// 	PartyRested()
+// 	Global("Player1Wounded","GLOBAL",1)
+// THEN
+// 	RESPONSE #100
+// 		ApplySpell(Player1,1883)
+// 		SetGlobal("Player1Wounded","GLOBAL",0)
+// 		Continue()
+// END
+// 
+// IF
+// 	PartyRested()
+// 	Global("Player2Wounded","GLOBAL",1)
+// THEN
+// 	RESPONSE #100
+// 		ApplySpell(Player2,1883)
+// 		SetGlobal("Player2Wounded","GLOBAL",0)
+// 		Continue()
+// END
+// 
+// IF
+// 	PartyRested()
+// 	Global("Player3Wounded","GLOBAL",1)
+// THEN
+// 	RESPONSE #100
+// 		ApplySpell(Player3,1883)
+// 		SetGlobal("Player3Wounded","GLOBAL",0)
+// 		Continue()
+// END
+// 
+// IF
+// 	PartyRested()
+// 	Global("Player4Wounded","GLOBAL",1)
+// THEN
+// 	RESPONSE #100
+// 		ApplySpell(Player4,1883)
+// 		SetGlobal("Player4Wounded","GLOBAL",0)
+// 		Continue()
+// END
+// 
+// IF
+// 	PartyRested()
+// 	Global("Player5Wounded","GLOBAL",1)
+// THEN
+// 	RESPONSE #100
+// 		ApplySpell(Player5,1883)
+// 		SetGlobal("Player5Wounded","GLOBAL",0)
+// 		Continue()
+// END
+// 
+// IF
+// 	PartyRested()
+// 	Global("Player6Wounded","GLOBAL",1)
+// THEN
+// 	RESPONSE #100
+// 		ApplySpell(Player6,1883)
+// 		SetGlobal("Player6Wounded","GLOBAL",0)
+// 		Continue()
+// END
+// 
+// IF
+// 	PartyMemberDied(Player1)
+// THEN
+// 	RESPONSE #70
+// 		DisplayString(Player1,65006) // Still clings to life
+// 		ApplySpell(Player1,1884)
+// 		SetGlobal("Player1Wounded","GLOBAL",1)
+// 	RESPONSE #30
+// 		DisplayString(Player1,65007) // Succumbs to death
+// END
+// 
+// IF
+// 	StateCheck(Player2,STATE_REALLY_DEAD)
+// THEN
+// 	RESPONSE #70
+// 		DisplayString(Player2,65006) // Still clings to life
+// 		ApplySpell(Player2,1884)
+// 		ActionOverride(Player2,MakeUnselectable(5000))
+// 		ChangeEnemyAlly(Player2,EVILBUTBLUE)
+// 		ActionOverride(Player2,PlayDeadInterruptable(9999))
+// 		Continue()
+// 	RESPONSE #1
+// 		DisplayString(Player2,65007) // Succumbs to death
+// 		SetGlobal("Player2Wounded","GLOBAL",1)
+// 		Continue()
+// END
+// 
+// IF
+// 	PartyMemberDied(Player3)
+// THEN
+// 	RESPONSE #70
+// 		DisplayString(Player3,65006) // Still clings to life
+// 		ApplySpell(Player3,1884)
+// 		SetGlobal("Player3Wounded","GLOBAL",1)
+// 		Continue()
+// 	RESPONSE #1
+// 		DisplayString(Player3,65007) // Succumbs to death
+// 		Continue()
+// END
+// 
+// IF
+// 	PartyMemberDied(Player4)
+// THEN
+// 	RESPONSE #70
+// 		DisplayString(Player4,65006) // Still clings to life
+// 		ApplySpell(Player4,1884)
+// 		SetGlobal("Player4Wounded","GLOBAL",1)
+// 		Continue()
+// 	RESPONSE #1
+// 		DisplayString(Player4,65007) // Succumbs to death
+// 		Continue()
+// END
+// 
+// IF
+// 	PartyMemberDied(Player5)
+// THEN
+// 	RESPONSE #70
+// 		DisplayString(Player5,65006) // Still clings to life
+// 		ApplySpell(Player5,1884)
+// 		SetGlobal("Player5Wounded","GLOBAL",1)
+// 		Continue()
+// 	RESPONSE #30
+// 		DisplayString(Player5,65007) // Succumbs to death
+// 		Continue()
+// END
+// 
+// IF
+// 	PartyMemberDied(Player6)
+// THEN
+// 	RESPONSE #70
+// 		DisplayString(Player6,65006) // Still clings to life
+// 		ApplySpell(Player6,1884)
+// 		SetGlobal("Player6Wounded","GLOBAL",1)
+// 		Continue()
+// 	RESPONSE #30
+// 		DisplayString(Player6,65007) // Succumbs to death
+// 		Continue()
+// END
+
+IF
+	!InParty(Myself)
+THEN
+	RESPONSE #100
+		Dialogue(Player1)
+		ChangeAIScript("",DEFAULT)
+		ChangeAIScript("",OVERRIDE)
+		SetDialog("multig")
+END
+
+IF
+	BreakingPoint()
+THEN
+	RESPONSE #100
+		Wait(1)
+		Dialogue(Player1)
+		ChangeAIScript("",DEFAULT)
+		SetDialog("multig")
+END
+
+IF
+	Global("Infected","GLOBAL",1)
+	GlobalTimerExpired("PlayerInfected","GLOBAL")
+	!Dead("Mendas3")
+	Exists(Player2)
+THEN
+	RESPONSE #100
+		ActionOverride(Player2,ForceSpell(Myself,PLAYER_WEREWOLF_CHANGE)) // SPWI946.SPL (No such index)
+		ActionOverride(Player3,ForceSpell(Myself,PLAYER_WEREWOLF_CHANGE)) // SPWI946.SPL (No such index)
+		ActionOverride(Player4,ForceSpell(Myself,PLAYER_WEREWOLF_CHANGE)) // SPWI946.SPL (No such index)
+		ActionOverride(Player5,ForceSpell(Myself,PLAYER_WEREWOLF_CHANGE)) // SPWI946.SPL (No such index)
+		ActionOverride(Player6,ForceSpell(Myself,PLAYER_WEREWOLF_CHANGE)) // SPWI946.SPL (No such index)
+END
+
+

@@ -1,0 +1,278 @@
+//Short Rest
+IF
+	HotKey(V)
+THEN
+	RESPONSE #100
+		FadeToColor([40.0],0)
+		Wait(2)
+		FadeFromColor([40.0],0)
+		Continue()
+END
+
+//WS
+//0 - Alive
+//1 - 'Injured' and out of the fight
+//2 - 'Revived' and ready to get injury penalties
+//3 - Dead for real
+
+//Cycle through WS 1-2 naturally
+//Reset the WS when a character is brought back to life
+//START: Character Died
+IF
+	// PartyMemberDied(Player2)
+	StateCheck(Player2,STATE_REALLY_DEAD)
+	Global("Player2WS","GLOBAL",0)
+THEN
+	RESPONSE #70
+		DisplayString(Player2,65006) // Still clings to life
+		SetGlobal("Player2WS","GLOBAL",1)
+		Continue()
+	RESPONSE #30
+		DisplayString(Player2,65007) // Succumbs to death
+		SetGlobal("Player2WS","GLOBAL",3)
+		Continue()
+END
+
+//START: Recovery Start
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortRest","GLOBAL",1)
+	Global("Player2WS","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player2,1884)
+		SetGlobal("Player2WS","GLOBAL",2)
+		Wait(1)
+		Continue()
+END
+
+// //START: Recovery - Pick wound type
+IF
+	Global("Player2WS","GLOBAL",2)
+THEN
+	RESPONSE #20
+		ApplySpellRES("#DEXHIT",Player2)
+		SetGlobal("Player2WS","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#INTHIT",Player2)
+		SetGlobal("Player2WS","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#CONHIT",Player2)
+		SetGlobal("Player2WS","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#STRHIT",Player2)
+		SetGlobal("Player2WS","GLOBAL",0)
+		Continue()
+END
+
+//START: Character Died
+IF
+	// PartyMemberDied(Player3)
+	StateCheck(Player3,STATE_REALLY_DEAD)
+	Global("Player3WS","GLOBAL",0)
+THEN
+	RESPONSE #70
+		DisplayString(Player3,65006) // Still clings to life
+		SetGlobal("Player3WS","GLOBAL",1)
+		Continue()
+	RESPONSE #30
+		DisplayString(Player3,65007) // Succumbs to death
+		SetGlobal("Player3WS","GLOBAL",3)
+		Continue()
+END
+
+//START: Recovery Start
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortRest","GLOBAL",1)
+	Global("Player3WS","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player3,1884)
+		SetGlobal("Player3WS","GLOBAL",2)
+		Wait(1)
+		Continue()
+END
+
+// //START: Recovery - Pick wound type
+IF
+	Global("Player3WS","GLOBAL",2)
+THEN
+	RESPONSE #20
+		ApplySpellRES("#DEXHIT",Player3)
+		SetGlobal("Player3WS","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#INTHIT",Player3)
+		SetGlobal("Player3WS","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#CONHIT",Player3)
+		SetGlobal("Player3WS","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#STRHIT",Player3)
+		SetGlobal("Player3WS","GLOBAL",0)
+		Continue()
+END
+
+//START: Character Died
+IF
+	PartyMemberDied(Player4)
+	//StateCheck(Player4,STATE_REALLY_DEAD)
+	//Global("Player4WS","GLOBAL",0)
+THEN
+	RESPONSE #70
+		DisplayString(Player4,65006) // Still clings to life
+		SetGlobal("Player4WS","GLOBAL",1)
+		Continue()
+	RESPONSE #30
+		DisplayString(Player4,65007) // Succumbs to death
+		SetGlobal("Player4WS","GLOBAL",3)
+		Continue()
+END
+
+//START: Recovery Start
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortRest","GLOBAL",1)
+	Global("Player4WS","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player4,1884)
+		SetGlobal("Player4WS","GLOBAL",2)
+		Wait(1)
+		Continue()
+END
+
+// //START: Recovery - Pick wound type
+IF
+	Global("Player4WS","GLOBAL",2)
+THEN
+	RESPONSE #20
+		ApplySpellRES("#DEXHIT",Player4)
+		SetGlobal("Player4WS","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#INTHIT",Player4)
+		SetGlobal("Player4WS","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#CONHIT",Player4)
+		SetGlobal("Player4WS","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#STRHIT",Player4)
+		SetGlobal("Player4WS","GLOBAL",0)
+		Continue()
+END
+
+//START: Character Died (Player5)
+IF
+	PartyMemberDied(Player5)
+	// StateCheck(Player5,STATE_REALLY_DEAD)
+	// Global("Player5WS","GLOBAL",0)
+THEN
+	RESPONSE #70
+		DisplayString(Player5,65006) // Still clings to life
+		SetGlobal("Player5WS","GLOBAL",1)
+		Continue()
+	RESPONSE #30
+		DisplayString(Player5,65007) // Succumbs to death
+		SetGlobal("Player5WS","GLOBAL",3)
+		Continue()
+END
+
+//START: Recovery Start
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortRest","GLOBAL",1)
+	Global("Player5WS","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player5,1884)
+		SetGlobal("Player5WS","GLOBAL",2)
+		Wait(1)
+		Continue()
+END
+
+// //START: Recovery - Pick wound type
+IF
+	Global("Player5WS","GLOBAL",2)
+THEN
+	RESPONSE #20
+		ApplySpellRES("#DEXHIT",Player5)
+		SetGlobal("Player5WS","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#INTHIT",Player5)
+		SetGlobal("Player5WS","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#CONHIT",Player5)
+		SetGlobal("Player5WS","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#STRHIT",Player5)
+		SetGlobal("Player5WS","GLOBAL",0)
+		Continue()
+END
+
+//START: Character Died
+IF
+	PartyMemberDied(Player6)
+	// StateCheck(Player6,STATE_REALLY_DEAD)
+	// Global("Player6WS","GLOBAL",0)
+THEN
+	RESPONSE #70
+		DisplayString(Player6,65006) // Still clings to life
+		SetGlobal("Player6WS","GLOBAL",1)
+		Continue()
+	RESPONSE #30
+		DisplayString(Player6,65007) // Succumbs to death
+		SetGlobal("Player6WS","GLOBAL",3)
+		Continue()
+END
+
+//START: Recovery Start
+IF
+	OR(2)
+		PartyRested()
+		Global("ShortRest","GLOBAL",1)
+	Global("Player6WS","GLOBAL",1)
+THEN
+	RESPONSE #100
+		ApplySpell(Player6,1884)
+		SetGlobal("Player6WS","GLOBAL",2)
+		Wait(1)
+		Continue()
+END
+
+// //START: Recovery - Pick wound type
+IF
+	Global("Player6WS","GLOBAL",2)
+THEN
+	RESPONSE #20
+		ApplySpellRES("#DEXHIT",Player6)
+		SetGlobal("Player6WS","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#INTHIT",Player6)
+		SetGlobal("Player6WS","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#CONHIT",Player6)
+		SetGlobal("Player6WS","GLOBAL",0)
+		Continue()
+	RESPONSE #20
+		ApplySpellRES("#STRHIT",Player6)
+		SetGlobal("Player6WS","GLOBAL",0)
+		Continue()
+END
